@@ -967,11 +967,6 @@ components:
             Timestamp of when the occurrence happened. It must follow RFC 3339
           type: string
           format: date-time
-      required:
-        - specversion
-        - type
-        - source
-        - id
 
     EsimCloudEvent:
       description: CloudEvent for eSIM operations
