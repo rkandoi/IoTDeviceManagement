@@ -90,7 +90,7 @@ paths:
         - With activateOnDownload=true: None → Enabled
 
         **Required**: EID + ICCID + activationCode
-      operationId: downloadESim
+      operationId: downloadEsim
       security:
         - openId:
             - iot-device-management:esims:download
@@ -101,7 +101,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DownloadESimRequest'
+              $ref: '#/components/schemas/DownloadEsimRequest'
             examples:
               download_example:
                 summary: Download eSIM profile to device
@@ -181,7 +181,7 @@ paths:
 
         **State Transition**: Disabled → Enabled
         **Required**: ICCID
-      operationId: enableESim
+      operationId: enableEsim
       security:
         - openId:
             - iot-device-management:esims:enable
@@ -192,7 +192,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/EnableESimRequest'
+              $ref: '#/components/schemas/EnableEsimRequest'
             examples:
               enable_profile:
                 summary: Enable profile
@@ -259,7 +259,7 @@ paths:
 
         **State Transition**: Enabled → Disabled
         **Required**: ICCID (identifies eSIM and device)
-      operationId: disableESim
+      operationId: disableEsim
       security:
         - openId:
             - iot-device-management:esims:disable
@@ -270,7 +270,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DisableESimRequest'
+              $ref: '#/components/schemas/DisableEsimRequest'
             examples:
               disable_profile:
                 summary: Disable profile
@@ -337,7 +337,7 @@ paths:
 
         **State Transition**: Disabled → Deleted (removed)
         **Required**: ICCID (identifies eSIM and device)
-      operationId: deleteESim
+      operationId: deleteEsim
       security:
         - openId:
             - iot-device-management:esims:delete
@@ -348,7 +348,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/DeleteESimRequest'
+              $ref: '#/components/schemas/DeleteEsimRequest'
             examples:
               delete_profile:
                 summary: Delete profile
@@ -415,7 +415,7 @@ paths:
 
         **State Transition**: No state change (sets attribute only)
         **Required**: ICCID (identifies eSIM to designate as fallback)
-      operationId: setFallbackESim
+      operationId: setFallbackEsim
       security:
         - openId:
             - iot-device-management:esims:enable
@@ -426,7 +426,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SetFallbackESimRequest'
+              $ref: '#/components/schemas/SetFallbackEsimRequest'
             examples:
               set_fallback:
                 summary: Set profile as fallback
@@ -492,7 +492,7 @@ paths:
         Retrieves current status and state information for eSIM profiles.
 
         **eSIM Identification**: Accepts either EID (all profiles on device) or ICCID (specific profile)
-      operationId: getESimStatus
+      operationId: getEsimStatus
       security:
         - openId:
             - iot-device-management:esims:read
@@ -501,7 +501,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/QueryESimStatusRequest'
+              $ref: '#/components/schemas/QueryEsimStatusRequest'
             examples:
               query_by_eid:
                 summary: Query status by EID
@@ -519,7 +519,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ESimStatusResponse'
+                $ref: '#/components/schemas/EsimStatusResponse'
               examples:
                 device_status:
                   value:
@@ -597,9 +597,11 @@ components:
     openId:
       type: openIdConnect
       openIdConnectUrl: https://example.com/.well-known/openid_configuration
+      description: OpenID Connect authentication
     notificationsBearerAuth:
       type: http
       scheme: bearer
+      description: Bearer token for callback authentication
 
   parameters:
     x-correlator:
@@ -614,6 +616,7 @@ components:
       type: string
       pattern: ^[a-zA-Z0-9-_:;.\\/<>{}]{0,256}$
       example: "b4333c46-49c0-4f62-80d7-f0ef930f1c46"
+      description: Correlation identifier
 
     # eSIM Identifier Schemas
     ESimEid:
@@ -662,8 +665,9 @@ components:
             - required: [iccid]
       description: eSIM identification for status operations (requires either EID or ICCID)
     # Request schemas using new eSIM identification
-    DownloadESimRequest:
+    DownloadEsimRequest:
       type: object
+      description: Request to download eSIM profile
       properties:
         esim:
           $ref: '#/components/schemas/ESimForDownload'
@@ -692,8 +696,9 @@ components:
         - activationCode
         - sink
 
-    EnableESimRequest:
+    EnableEsimRequest:
       type: object
+      description: Request to enable eSIM profile
       properties:
         esim:
           $ref: '#/components/schemas/ESimForOperation'
@@ -710,8 +715,9 @@ components:
         - esim
         - sink
 
-    DisableESimRequest:
+    DisableEsimRequest:
       type: object
+      description: Request to disable eSIM profile
       properties:
         esim:
           $ref: '#/components/schemas/ESimForOperation'
@@ -728,8 +734,9 @@ components:
         - esim
         - sink
 
-    DeleteESimRequest:
+    DeleteEsimRequest:
       type: object
+      description: Request to delete eSIM profile
       properties:
         esim:
           $ref: '#/components/schemas/ESimForOperation'
@@ -746,8 +753,9 @@ components:
         - esim
         - sink
 
-    SetFallbackESimRequest:
+    SetFallbackEsimRequest:
       type: object
+      description: Request to set eSIM as fallback
       properties:
         esim:
           $ref: '#/components/schemas/ESimForOperation'
@@ -764,8 +772,9 @@ components:
         - esim
         - sink
 
-    QueryESimStatusRequest:
+    QueryEsimStatusRequest:
       type: object
+      description: Request to query eSIM status
       properties:
         esim:
           $ref: '#/components/schemas/ESimForStatus'
@@ -799,8 +808,9 @@ components:
         - status
         - esim
 
-    ESimStatusResponse:
+    EsimStatusResponse:
       type: object
+      description: Response containing eSIM status information
       properties:
         esims:
           type: array
@@ -837,42 +847,140 @@ components:
       properties:
         credentialType:
           type: string
-          enum: [ACCESSTOKEN]
-        accessToken:
-          type: string
-        accessTokenExpireUtc:
-          type: string
-          format: date-time
-        accessTokenType:
-          type: string
-          enum: [bearer]
+          enum:
+            - PLAIN
+            - ACCESSTOKEN
+            - REFRESHTOKEN
+      discriminator:
+        propertyName: credentialType
+        mapping:
+          PLAIN: '#/components/schemas/PlainCredential'
+          ACCESSTOKEN: '#/components/schemas/AccessTokenCredential'
+          REFRESHTOKEN: '#/components/schemas/RefreshTokenCredential'
       required:
         - credentialType
 
+    PlainCredential:
+      type: object
+      description: A plain credential as a combination of an identifier and a secret.
+      allOf:
+        - $ref: '#/components/schemas/SinkCredential'
+        - type: object
+          required:
+            - identifier
+            - secret
+          properties:
+            identifier:
+              description: The identifier might be an account or username.
+              type: string
+            secret:
+              description: The secret might be a password or passphrase.
+              type: string
+
+    AccessTokenCredential:
+      type: object
+      description: An access token credential.
+      allOf:
+        - $ref: '#/components/schemas/SinkCredential'
+        - type: object
+          properties:
+            accessToken:
+              description: REQUIRED. An access token is a previously acquired token granting access to the target resource.
+              type: string
+            accessTokenExpiresUtc:
+              type: string
+              format: date-time
+              description: REQUIRED. An absolute UTC instant at which the token shall be considered expired.
+            accessTokenType:
+              description: REQUIRED. Type of the access token (See [OAuth 2.0](https://tools.ietf.org/html/rfc6749#section-7.1)). For the current version of the API the type MUST be set to `Bearer`.
+              type: string
+              enum:
+                - bearer
+          required:
+            - accessToken
+            - accessTokenExpiresUtc
+            - accessTokenType
+
+    RefreshTokenCredential:
+      type: object
+      description: An access token credential with a refresh token.
+      allOf:
+        - $ref: '#/components/schemas/SinkCredential'
+        - type: object
+          properties:
+            accessToken:
+              description: REQUIRED. An access token is a previously acquired token granting access to the target resource.
+              type: string
+            accessTokenExpiresUtc:
+              type: string
+              format: date-time
+              description: REQUIRED. An absolute UTC instant at which the token shall be considered expired.
+            accessTokenType:
+              description: REQUIRED. Type of the access token (See [OAuth 2.0](https://tools.ietf.org/html/rfc6749#section-7.1)).
+              type: string
+              enum:
+                - bearer
+            refreshToken:
+              description: REQUIRED. An refresh token credential used to acquire access tokens.
+              type: string
+            refreshTokenEndpoint:
+              type: string
+              format: uri
+              description: REQUIRED. A URL at which the refresh token can be traded for an access token.
+      required:
+        - accessToken
+        - accessTokenExpiresUtc
+        - accessTokenType
+        - refreshToken
+        - refreshTokenEndpoint
+
+
     CloudEvent:
       type: object
-      description: CloudEvents specification for notifications
+      description: Event compliant with the CloudEvents specification
+      required:
+        - id
+        - source
+        - specversion
+        - type
+        - time
       properties:
-        specversion:
-          type: string
-        type:
+        id:
+          description: Identifier of this event, that must be unique in the source context.
           type: string
         source:
+          description: Identifies the context in which an event happened in the specific Provider Implementation.
           type: string
-        id:
+          format: uri-reference
+        type:
+          description: The type of the event.
           type: string
+        specversion:
+          description: Version of the specification to which this event conforms (must be 1.0 if it conforms to cloudevents 1.0.2 version)
+          type: string
+          enum:
+            - '1.0'
+        datacontenttype:
+          description: 'media-type that describes the event payload encoding, must be "application/json" for CAMARA APIs'
+          type: string
+          enum:
+            - 'application/json'
+        data:
+          description: Event notification details payload, which depends on the event type
+          type: object
         time:
+          description: |
+            Timestamp of when the occurrence happened. It must follow RFC 3339
           type: string
           format: date-time
-        data:
-          type: object
       required:
         - specversion
         - type
         - source
         - id
 
-    ESimCloudEvent:
+    EsimCloudEvent:
+      description: CloudEvent for eSIM operations
       allOf:
         - $ref: '#/components/schemas/CloudEvent'
         - type: object
@@ -881,17 +989,20 @@ components:
               enum:
                 - com.camara.esim-management.vwip.operation-completed
             data:
-              $ref: '#/components/schemas/ESimEventData'
+              $ref: '#/components/schemas/EsimEventData'
 
-    ESimEventData:
+    EsimEventData:
       type: object
+      description: Event data for eSIM operations
       properties:
         operationId:
           type: string
           format: uuid
+          description: Operation identifier
         operation:
           type: string
           enum: [download, enable, disable, delete, set-fallback]
+          description: Operation type
         status:
           type: string
           enum: [completed]
@@ -911,15 +1022,20 @@ components:
 
     ErrorInfo:
       type: object
+      description: Error information
       properties:
         status:
           type: integer
+          description: HTTP status code
         code:
           type: string
+          description: Error code
         message:
           type: string
+          description: Error message
         details:
           type: string
+          description: Additional error details
       required:
         - status
         - code
@@ -1065,6 +1181,7 @@ components:
   examples:
     ESIM_DOWNLOAD_COMPLETED:
       summary: eSIM download operation completed
+      description: Callback event for completed download operation
       value:
         specversion: "1.0"
         type: "com.camara.esim-management.vwip.operation-completed"
@@ -1084,6 +1201,7 @@ components:
 
     ESIM_ENABLE_COMPLETED:
       summary: eSIM enable operation completed
+      description: Callback event for completed enable operation
       value:
         specversion: "1.0"
         type: "com.camara.esim-management.vwip.operation-completed"
@@ -1103,6 +1221,7 @@ components:
 
     ESIM_DISABLE_COMPLETED:
       summary: eSIM disable operation completed (failed)
+      description: Callback event for completed disable operation
       value:
         specversion: "1.0"
         type: "com.camara.esim-management.vwip.operation-completed"
@@ -1123,6 +1242,7 @@ components:
 
     ESIM_DELETE_COMPLETED:
       summary: eSIM delete operation completed
+      description: Callback event for completed delete operation
       value:
         specversion: "1.0"
         type: "com.camara.esim-management.vwip.operation-completed"
@@ -1142,6 +1262,7 @@ components:
 
     ESIM_SET_FALLBACK_COMPLETED:
       summary: eSIM set-fallback operation completed
+      description: Callback event for completed set-fallback operation
       value:
         specversion: "1.0"
         type: "com.camara.esim-management.vwip.operation-completed"
