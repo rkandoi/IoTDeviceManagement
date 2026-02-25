@@ -641,9 +641,7 @@ components:
           $ref: '#/components/schemas/ESimEid'
         iccid:
           $ref: '#/components/schemas/ESimIccid'
-      # No required fields at base level - enforced by operation-specific schemas
 
-    # Operation-specific eSIM schemas
     ESimForDownload:
       allOf:
         - $ref: '#/components/schemas/ESim'
