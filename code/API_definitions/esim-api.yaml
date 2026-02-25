@@ -134,7 +134,7 @@ paths:
                 content:
                   application/cloudevents+json:
                     schema:
-                      $ref: '#/components/schemas/ESimCloudEvent'
+                      $ref: '#/components/schemas/EsimCloudEvent'
                     examples:
                       ESIM_DOWNLOAD_COMPLETED:
                         $ref: '#/components/examples/ESIM_DOWNLOAD_COMPLETED'
@@ -214,7 +214,7 @@ paths:
                 content:
                   application/cloudevents+json:
                     schema:
-                      $ref: '#/components/schemas/ESimCloudEvent'
+                      $ref: '#/components/schemas/EsimCloudEvent'
                     examples:
                       ESIM_ENABLE_COMPLETED:
                         $ref: '#/components/examples/ESIM_ENABLE_COMPLETED'
@@ -292,7 +292,7 @@ paths:
                 content:
                   application/cloudevents+json:
                     schema:
-                      $ref: '#/components/schemas/ESimCloudEvent'
+                      $ref: '#/components/schemas/EsimCloudEvent'
                     examples:
                       ESIM_DISABLE_COMPLETED:
                         $ref: '#/components/examples/ESIM_DISABLE_COMPLETED'
@@ -370,7 +370,7 @@ paths:
                 content:
                   application/cloudevents+json:
                     schema:
-                      $ref: '#/components/schemas/ESimCloudEvent'
+                      $ref: '#/components/schemas/EsimCloudEvent'
                     examples:
                       ESIM_DELETE_COMPLETED:
                         $ref: '#/components/examples/ESIM_DELETE_COMPLETED'
@@ -448,7 +448,7 @@ paths:
                 content:
                   application/cloudevents+json:
                     schema:
-                      $ref: '#/components/schemas/ESimCloudEvent'
+                      $ref: '#/components/schemas/EsimCloudEvent'
                     examples:
                       ESIM_SET_FALLBACK_COMPLETED:
                         $ref: '#/components/examples/ESIM_SET_FALLBACK_COMPLETED'
@@ -527,7 +527,6 @@ paths:
                       - eid: "89049032000000000000000000000001"
                         iccid: "8901260123456789012"
                         state: "enabled"
-                        phoneNumber: "+1234567890"
                         isFallback: false
                       - eid: "89049032000000000000000000000001"
                         iccid: "8901260123456789013"
@@ -825,11 +824,6 @@ components:
                 type: string
                 enum: [enabled, disabled]
                 description: Current state of the eSIM profile
-              phoneNumber:
-                type: string
-                pattern: '^\\+[1-9][0-9]{4,14}$'
-                description: Phone number in international format
-                example: "+1234567890"
               isFallback:
                 type: boolean
                 description: Whether this eSIM is designated as fallback
